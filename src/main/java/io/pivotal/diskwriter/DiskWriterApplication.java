@@ -20,31 +20,44 @@ public class DiskWriterApplication {
 		SpringApplication.run(DiskWriterApplication.class, args);
 	}
 
+	static class WriterRunnable implements Runnable {
+		private int index;
+
+		public WriterRunnable(int index) {
+			this.index = index;
+		}
+
+		@Override
+		public void run() {
+			System.out.println("Starting runner #" + index);
+			while (true) {
+				byte dataToWrite[] = new byte[1024 * 1000];
+				FileOutputStream out;
+				try {
+					out = new FileOutputStream("/tmp/" + index + ".dat");
+					out.write(dataToWrite);
+					out.flush();
+					out.close();
+					counter++;
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.exit(1);
+				}
+			}
+		}
+
+	}
+
+	public static void startWriter(int index) {
+		WriterRunnable runnable = new WriterRunnable(index);
+		Thread t = new Thread(runnable);
+		t.setPriority(Thread.MIN_PRIORITY);
+		t.start();
+	}
+
 	public static void startWriters() {
-
 		IntStream.range(0, Integer.parseInt(writers)).forEach(
-				i -> new Thread(new Runnable() {
-
-					@Override
-					public void run() {
-						System.out.println("Starting runner #" + i);
-						while (true) {
-							byte dataToWrite[] = new byte[1024 * 1000];
-							FileOutputStream out;
-							try {
-								out = new FileOutputStream("/tmp/" + i + ".dat");
-								out.write(dataToWrite);
-								out.flush();
-								out.close();
-								counter++;
-							} catch (Exception e) {
-								e.printStackTrace();
-								System.exit(1);
-							}
-
-						}
-					}
-				}).start());
+				i -> startWriter(i));
 	}
 
 	@RequestMapping(value = "/")
