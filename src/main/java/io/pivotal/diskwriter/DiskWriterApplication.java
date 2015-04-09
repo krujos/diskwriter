@@ -1,6 +1,7 @@
 package io.pivotal.diskwriter;
 
 import java.io.FileOutputStream;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 import org.springframework.boot.SpringApplication;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DiskWriterApplication {
 
 	private static String writers = System.getenv("WRITERS");
-	private static int counter = 0;
+	private static AtomicInteger counter = new AtomicInteger(0);
 
 	public static void main(String[] args) {
 		startWriters();
@@ -38,7 +39,7 @@ public class DiskWriterApplication {
 					out.write(dataToWrite);
 					out.flush();
 					out.close();
-					counter++;
+					counter.incrementAndGet();
 				} catch (Exception e) {
 					e.printStackTrace();
 					System.exit(1);
