@@ -6,5 +6,7 @@ export WRITERS=50
 java -jar target/diskwriter-0.0.1-SNAPSHOT.jar
 ````
 
-`WRITERS` causes the app to spawn a that many threads. Each thread writes a ~10MB file over and over again. 
+`WRITERS` causes the app to spawn a that many threads. Each thread writes a 1B file over and over again. 
 
+
+You need to hit the app url to get the threads started writing. 
