@@ -29,7 +29,7 @@ public class DiskWriterApplication {
 					public void run() {
 						System.out.println("Starting runner #" + i);
 						while (true) {
-							byte dataToWrite[] = new byte[1024 * 1000];
+							byte dataToWrite[] = new byte[1024 * 10000];
 							FileOutputStream out;
 							try {
 								out = new FileOutputStream("/tmp/" + i + ".dat");
