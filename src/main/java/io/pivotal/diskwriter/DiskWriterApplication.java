@@ -2,7 +2,6 @@ package io.pivotal.diskwriter;
 
 import java.io.FileOutputStream;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.IntStream;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -57,8 +56,12 @@ public class DiskWriterApplication {
 	}
 
 	public static void startWriters() {
-		IntStream.range(0, Integer.parseInt(writers)).forEach(
-				i -> startWriter(i));
+		// Get all java 7 on it for the spring insight buildpack
+		for (int i = 0; i < Integer.parseInt(writers); ++i) {
+			startWriter(i);
+		}
+		// IntStream.range(0, Integer.parseInt(writers)).forEach(
+		// i -> startWriter(i));
 	}
 
 	@RequestMapping(value = "/")
